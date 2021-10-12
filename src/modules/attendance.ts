@@ -1,4 +1,4 @@
-import { Query, Mutation, Resolver, Args, Arg } from "type-graphql";
+import { Query, Mutation, Resolver,  Arg, Args } from "type-graphql";
 import { Attendance } from "../entities/attendance";
 import { getRepository } from "typeorm";
 import { SaveAttendanceArgs } from "@src/entities/argTypes";
@@ -40,13 +40,4 @@ export class AttendancesResolver {
     }
     return attendance;
   }
-
-  // @Mutation(() => Boolean)
-  // async sendAttendance(
-  //   @Arg("roomId") roomId: string
-  // ): Promise<Boolean>{
-
-  //   // TODO: need to decide from which service Attendance should be send to Assessment service
-  //   return true;
-  // }
 }
