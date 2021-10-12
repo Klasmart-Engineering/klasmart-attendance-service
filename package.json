@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "db:setup": "ts-node tests/utils/setup.ts",
-    "test": "npm run db:setup && jest",
+    "test": "npm run db:setup && jest --runInBand",
     "build": "webpack --config webpack.dev.js",
     "watch": "tsc -w",
     "start": "ts-node src/index.ts",
