@@ -1,8 +1,8 @@
 import { Mutation, Resolver, Args } from "type-graphql";
-import { Feedback, QuickFeedback } from "@src/entities/feedback";
+import { Feedback, QuickFeedback } from "../entities/feedback";
 import { UserInputError } from "apollo-server-express";
-import { QuickFeedbackType, FeedbackType } from "@src/types";
-import { SaveFeedbackArgs } from "@src/entities/argTypes";
+import { QuickFeedbackType, FeedbackType } from "../types";
+import { SaveFeedbackArgs } from "../entities/argTypes";
 
 @Resolver(Feedback)
 export class FeedbackResolver{

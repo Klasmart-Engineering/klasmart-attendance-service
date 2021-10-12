@@ -2,8 +2,8 @@ import * as dotenv from "dotenv"
 import "reflect-metadata";
 import "module-alias/register";
 import { ApolloServer } from "apollo-server-express";
-import * as Express from "express";
-import { connectPostgres } from "@src/postgresDB";
+import  Express from "express";
+import { connectPostgres } from "./postgresDB";
 import { createSchema } from "./utils/createSchema";
 
 

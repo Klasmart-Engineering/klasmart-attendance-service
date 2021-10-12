@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryColumn, Index, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
 import { Field, ObjectType, InputType } from "type-graphql";
-import { QuickFeedbackType, FeedbackType } from "@src/types";
+import { QuickFeedbackType, FeedbackType } from "../types";
 
 @ObjectType()
 @Entity()

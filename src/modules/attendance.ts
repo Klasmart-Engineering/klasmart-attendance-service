@@ -1,7 +1,7 @@
 import { Query, Mutation, Resolver,  Arg, Args } from "type-graphql";
 import { Attendance } from "../entities/attendance";
 import { getRepository } from "typeorm";
-import { SaveAttendanceArgs } from "@src/entities/argTypes";
+import { SaveAttendanceArgs } from "../entities/argTypes";
 
 @Resolver(Attendance)
 export class AttendancesResolver {
@@ -31,13 +31,13 @@ export class AttendancesResolver {
       attendance.roomId = roomId;
       attendance.userId = userId;
       await attendance.save();
-      console.log("logAttendance", attendance);
       
     } catch(e) {
-        console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
-        console.log(e);
-        
+      console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
+      console.log(e);
+      
     }
+    console.log("logAttendance", attendance);
     return attendance;
   }
 }
