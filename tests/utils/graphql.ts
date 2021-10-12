@@ -7,7 +7,8 @@ export const SAVE_ATTENDANCE_MUTATION = `
         joinTimestamp,
         leaveTimestamp,
       }
-  }`;
+  }
+`;
 
 export const GET_CLASS_ATTENDANCE_QUERY = `
   query Query($roomId: String!) {
@@ -19,4 +20,30 @@ export const GET_CLASS_ATTENDANCE_QUERY = `
       leaveTimestamp
     }
   }
-  `
+`;
+
+export const GET_USER_ATTENDANCE_QUERY = `
+  query Query($userId: String!) {
+    getUserAttendance(userId: $userId) {
+      roomId
+      userId
+      sessionId
+      joinTimestamp
+      leaveTimestamp
+    }
+  }
+`;
+
+export const SAVE_FEEDBACK_MUTATION = `
+  mutation SaveFeedbackMutation($roomId: String!, $userId: String!, $sessionId: String!, $stars: Int!, $feedbackType: String!, $comment: String!, $quickFeedback: [QuickFeedbackInputType!]!) {
+    saveFeedback(roomId: $roomId, userId: $userId, sessionId: $sessionId, stars: $stars, feedbackType: $feedbackType, comment: $comment, quickFeedback: $quickFeedback) {
+      roomId
+      userId
+      sessionId
+      stars
+      comment
+      type
+      createdAt
+    }
+  }
+`;
