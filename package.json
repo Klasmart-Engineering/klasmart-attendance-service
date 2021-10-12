@@ -6,9 +6,9 @@
   "scripts": {
     "db:setup": "ts-node tests/utils/setup.ts",
     "test": "npm run db:setup && jest --runInBand",
-    "build": "webpack --config webpack.dev.js",
+    "build": "webpack",
     "watch": "tsc -w",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node dist/bundle.js",
     "dev": "ts-node-dev src/index.ts"
   },
   "_moduleAliases": {
@@ -38,7 +38,8 @@
     "ts-node-dev": "^1.1.8",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.38",
-    "webpack-dev-server": "^4.3.1"
+    "webpack-dev-server": "^4.3.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",

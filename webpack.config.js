@@ -1,7 +1,7 @@
 const path = require('path');
 const { IgnorePlugin } = require('webpack');
+const nodeExternals = require('webpack-node-externals');
 
-console.log(__dirname);
 module.exports = {
     mode: 'development',
     target: 'node',
@@ -20,8 +20,8 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
-          "@src": path.resolve(__dirname, "src/"),
-          "@tests": path.resolve(__dirname, "tests/")
+          "@src": path.resolve(__dirname, "./src/"),
+          "@tests": path.resolve(__dirname, "./tests/")
         },
         symlinks: false
     },
@@ -34,10 +34,7 @@ module.exports = {
         resourceRegExp: /^pg-native$/,
       }),
     ],
-    externals: {
-        
-
-    },
+    externals: [nodeExternals()],
 
     devServer: {
         port: 3000
