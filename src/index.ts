@@ -2,19 +2,16 @@ import * as dotenv from "dotenv"
 import "reflect-metadata";
 import "module-alias/register";
 import { ApolloServer } from "apollo-server-express";
-import * as Express from "express"
-import { buildSchema } from "type-graphql";
-import { AttendancesResolver, FeedbackResolver } from "@src/modules/index";
+import * as Express from "express";
 import { connectPostgres } from "@src/postgresDB";
+import { createSchema } from "./utils/createSchema";
 
 
 dotenv.config();
 
 const main = async () => {
   await connectPostgres();
-  const schema = await buildSchema({
-    resolvers: [AttendancesResolver, FeedbackResolver]
-  })
+  const schema = await createSchema();
   const server = new ApolloServer({ schema });
   const app = Express();
   await server.start();
