@@ -3,7 +3,8 @@ import { Connection } from "typeorm";
 import * as dotenv from "dotenv"
 import { connectPostgres } from "./utils/postgresDB";
 import { graphqlRequest } from "./utils/graphqlRequest";
-import { SAVE_ATTENDANCE_MUTATION } from "./utils/graphql";
+import { SAVE_ATTENDANCE_MUTATION, GET_CLASS_ATTENDANCE_QUERY } from "./utils/graphql";
+import { attendanceMockData } from "./mockData/resolverMock";
 dotenv.config();
 let connection: Connection;
 // jest.useFakeTimers();
@@ -16,19 +17,23 @@ afterAll(async () => {
 });
 
 describe("queries", () => {
-    it("token", async () => {
+    it("save Attendance", async () => {
       const savedAttendance = await graphqlRequest({
         source: SAVE_ATTENDANCE_MUTATION,
-        variableValues: {
-            roomId: "1",
-            userId: "123",
-            sessionId: "12345",
-            joinTimestamp: "2021-10-08T20:48:40.446Z",
-            leaveTimestamp: "2021-10-08T20:48:40.446Z",
-          
-        }
+        variableValues: attendanceMockData
       });
 
-      console.log(savedAttendance);
+      console.log(savedAttendance.data?.savedAttendance);
+
+      const getClassAttendance = await graphqlRequest({
+        source: GET_CLASS_ATTENDANCE_QUERY,
+        variableValues: { roomId: attendanceMockData.roomId }
+      });
+
+
+      console.log(getClassAttendance.data);
     });
+
+
+
 });
