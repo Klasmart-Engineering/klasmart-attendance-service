@@ -26,7 +26,7 @@ module.exports = {
         symlinks: false
     },
     output: {
-        filename: 'bundle.js',
+        filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
@@ -34,7 +34,7 @@ module.exports = {
         resourceRegExp: /^pg-native$/,
       }),
     ],
-    externals: [nodeExternals()],
+    externals: [nodeExternals({additionalModuleDirs: ["./types/**"]})],
 
     devServer: {
         port: 3000
