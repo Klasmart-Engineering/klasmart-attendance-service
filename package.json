@@ -8,7 +8,7 @@
     "test": "npm run db:setup && jest --runInBand",
     "build": "webpack",
     "watch": "tsc -w",
-    "start": "ts-node dist/bundle.js",
+    "start": "ts-node dist/index.js",
     "dev": "ts-node-dev src/index.ts"
   },
   "_moduleAliases": {
