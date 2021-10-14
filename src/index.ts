@@ -1,3 +1,4 @@
+//TODO: Add new relic
 import * as dotenv from "dotenv"
 import "reflect-metadata";
 import "module-alias/register";
@@ -12,7 +13,12 @@ dotenv.config();
 const main = async () => {
   await connectPostgres();
   const schema = await createSchema();
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      //TODO: New Relic Plugin
+    ] 
+  });
   const app = Express();
   await server.start();
   server.applyMiddleware({ app });
