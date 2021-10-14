@@ -1,5 +1,7 @@
 //TODO: Add new relic
-import * as dotenv from "dotenv"
+import "newrelic";
+import newRelicApolloPlugin from "@newrelic/apollo-server-plugin";
+import dotenv from "dotenv"
 import "reflect-metadata";
 import "module-alias/register";
 import { ApolloServer } from "apollo-server-express";
@@ -16,7 +18,7 @@ const main = async () => {
   const server = new ApolloServer({
     schema,
     plugins: [
-      //TODO: New Relic Plugin
+      newRelicApolloPlugin
     ] 
   });
   const app = Express();
