@@ -10,8 +10,10 @@ pipelines:
           image: node:lts
           script:
             - npm ci
+            - npm run build
           caches:
             - nodemodules
+            - dist/**
           artifacts:
             - node_modules/**
       - step: &step-build-docker
@@ -21,19 +23,19 @@ pipelines:
             - pip3 install -U awscli
 
             - export BRANCH_TAG=$(echo "$BITBUCKET_BRANCH" | sed -E 's/([^0-9a-zA-Z]+)/-/g' | awk '{print tolower($0)}')
-            - export REPO=$DOCKER_REPO_URL/kidsloop-live-backend # DOCKER_REPO_URL is workspace wide variable
+            - export REPO=$DOCKER_REPO_URL/kidsloop-attendance-service # DOCKER_REPO_URL is workspace wide variable
             - export COMMIT_TAG=$(echo $BITBUCKET_COMMIT | cut -c1-7)
             - printf '"Git tag":"%s", "Git commit":"%s" "ECR repo":"%s"' $BRANCH_TAG $COMMIT_TAG $REPO
 
             - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $DOCKER_REPO_URL
 
             - mv deploy/Dockerfile.bitbucket-pipeline .
-            - docker build -t live-backend -f Dockerfile.bitbucket-pipeline .
+            - docker build -t kidsloop-attendance-service -f Dockerfile.bitbucket-pipeline .
 
-            - docker tag live-backend:latest $REPO:$BRANCH_TAG
-            - docker tag live-backend:latest $REPO:$BRANCH_TAG-latest
-            - docker tag live-backend:latest $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
-            - docker tag live-backend:latest $REPO:$BRANCH_TAG-$COMMIT_TAG
+            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG
+            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-latest
+            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
+            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$COMMIT_TAG
 
             - docker push $REPO:$BRANCH_TAG
             - docker push $REPO:$BRANCH_TAG-latest
