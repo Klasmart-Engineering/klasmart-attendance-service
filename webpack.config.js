@@ -3,9 +3,10 @@ const { IgnorePlugin } = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     target: 'node',
     entry: ['./src/index.ts'],
+    devtool: 'source-map',
     module: {
         rules: [
             {
