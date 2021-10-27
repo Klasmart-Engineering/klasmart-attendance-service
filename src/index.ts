@@ -23,10 +23,9 @@ const main = async () => {
   });
   const app = Express();
   await server.start();
-  server.applyMiddleware({ app });
-  
-  app.listen(process.env.PORT || 3000, () => {
-    console.log(`Server started on http://localhost:${process.env.PORT || 3000}/graphql`)
+  server.applyMiddleware({ app: app, path: "/attendance" });
+  app.listen(process.env.PORT || 3000,  () => {
+    console.log(`Server started on http://localhost:${process.env.PORT || 3000}/attendance`)
   });
 }
 
