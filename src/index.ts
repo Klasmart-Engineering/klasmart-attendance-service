@@ -8,7 +8,7 @@ import { ApolloServer } from "apollo-server-express";
 import  Express from "express";
 import { connectPostgres } from "./postgresDB";
 import { createSchema } from "./utils/createSchema";
-
+import morgan from "morgan";
 
 dotenv.config();
 
@@ -23,7 +23,11 @@ const main = async () => {
   });
   const app = Express();
   await server.start();
+  app.use(morgan('combined'));
   server.applyMiddleware({ app: app, path: "/attendance/" });
+
+
+
   app.listen(process.env.PORT || 3000,  () => {
     console.log(`Server started on http://localhost:${process.env.PORT || 3000}${server.graphqlPath}`)
   });
