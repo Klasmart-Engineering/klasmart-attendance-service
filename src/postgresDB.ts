@@ -1,4 +1,6 @@
 import { createConnection } from "typeorm";
+import { Attendance } from "./entities/attendance";
+import { Feedback, QuickFeedback } from "./entities/feedback";
 
 export async function connectPostgres() {
   if (!process.env.POSTGRES_DATABASE_URL) {
@@ -11,7 +13,7 @@ export async function connectPostgres() {
       url: process.env.POSTGRES_DATABASE_URL || "postgres://postgres:kidsloop@localhost",
       synchronize: true,
       logging: Boolean(process.env.DATABASE_LOGGING),
-      entities: ["src/entities/*.ts"],
+      entities: [Attendance, Feedback, QuickFeedback],
   });
   console.log("🐘 Connected to postgres");
   return connection;
