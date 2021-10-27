@@ -24,7 +24,12 @@ const main = async () => {
   const app = Express();
   await server.start();
   app.use(morgan('combined'));
-  server.applyMiddleware({ app: app, path: "/attendance/" });
+  app.use((request, _response, next) => {
+    console.log(request.path);
+    next();
+});
+  server.applyMiddleware({ app: app, path: "/attendance" });
+
 
 
 
