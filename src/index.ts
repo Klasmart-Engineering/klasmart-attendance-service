@@ -23,9 +23,9 @@ const main = async () => {
   });
   const app = Express();
   await server.start();
-  server.applyMiddleware({ app: app, path: "/" });
+  server.applyMiddleware({ app: app, path: "/attendance/" });
   app.listen(process.env.PORT || 3000,  () => {
-    console.log(`Server started on http://localhost:${process.env.PORT || 3000}/attendance`)
+    console.log(`Server started on http://localhost:${process.env.PORT || 3000}${server.graphqlPath}`)
   });
 }
 
