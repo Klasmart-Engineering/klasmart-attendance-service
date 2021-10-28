@@ -8,7 +8,6 @@ import { ApolloServer } from "apollo-server-express";
 import  Express from "express";
 import { connectPostgres } from "./postgresDB";
 import { createSchema } from "./utils/createSchema";
-import morgan from "morgan";
 
 dotenv.config();
 
@@ -23,11 +22,6 @@ const main = async () => {
   });
   const app = Express();
   await server.start();
-  app.use(morgan('combined'));
-  app.use((request, _response, next) => {
-    console.log(request.path);
-    next();
-});
   server.applyMiddleware({ app: app, path: "/attendance" });
 
 
