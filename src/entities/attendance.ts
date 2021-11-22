@@ -1,12 +1,9 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryColumn, Index, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryColumn, Index } from "typeorm";
 
 @ObjectType()
 @Entity()
 export class Attendance extends BaseEntity {    
-
-    @PrimaryGeneratedColumn()
-    id: number;
 
     @Field()
     @PrimaryColumn({ name: "session_id" })

@@ -5,10 +5,7 @@ import { QuickFeedbackType, FeedbackType } from "../types";
 @ObjectType()
 @Entity()
 export class Feedback extends BaseEntity {  
-    
-    @PrimaryGeneratedColumn()
-    id: number;
-    
+
     @Field()
     @PrimaryColumn({ name: "session_id" })
     sessionId!: string
