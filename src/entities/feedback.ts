@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, PrimaryColumn, Index, CreateDateColumn, OneToMany, ManyToOne } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryColumn, Index, CreateDateColumn, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
 import { Field, ObjectType, InputType } from "type-graphql";
 import { QuickFeedbackType, FeedbackType } from "../types";
 
@@ -46,6 +46,9 @@ export class Feedback extends BaseEntity {
 @InputType()
 @Entity()
 export class QuickFeedback extends BaseEntity {    
+
+    @PrimaryGeneratedColumn()
+    id: number;
 
     @Field()
     @CreateDateColumn({ name: "created_at"})
