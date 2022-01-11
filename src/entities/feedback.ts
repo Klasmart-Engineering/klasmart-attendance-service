@@ -2,8 +2,8 @@ import { BaseEntity, Column, Entity, PrimaryColumn, Index, CreateDateColumn, Pri
 import { Field, ObjectType, InputType } from "type-graphql";
 import { QuickFeedbackType, FeedbackType } from "../types";
 
-@ObjectType()
 @Entity()
+@ObjectType()
 export class Feedback extends BaseEntity {  
 
     @Field()
@@ -29,7 +29,7 @@ export class Feedback extends BaseEntity {
         type: "enum",
         enum: FeedbackType,
     })
-    type!: FeedbackType
+    type!: string
 
     @Field()
     @Column({ name: "stars" })
@@ -59,7 +59,7 @@ export class QuickFeedback extends BaseEntity {
         type: "enum",
         enum: QuickFeedbackType,
     })
-    type!: QuickFeedbackType
+    type!: string
 
     @Field()
     @Column({ name: "stars" })

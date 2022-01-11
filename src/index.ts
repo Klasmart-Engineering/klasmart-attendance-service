@@ -1,4 +1,3 @@
-//TODO: Add new relic
 import "newrelic";
 import newRelicApolloPlugin from "@newrelic/apollo-server-plugin";
 import dotenv from "dotenv"
@@ -6,13 +5,22 @@ import "reflect-metadata";
 import "module-alias/register";
 import { ApolloServer } from "apollo-server-express";
 import  Express from "express";
-import { connectPostgres } from "./postgresDB";
+import connOptions from "./typeormConfig";
 import { createSchema } from "./utils/createSchema";
+import { createConnection } from "typeorm";
+
 
 dotenv.config();
 
 const main = async () => {
-  await connectPostgres();
+  
+  if (process.env.POSTGRES_DATABASE_URL) {
+    await createConnection(
+      connOptions  
+    );
+  }else{
+    console.log("Attendance db not configured - skipping");
+  }
   const schema = await createSchema();
   const server = new ApolloServer({
     schema,
