@@ -8,8 +8,10 @@
     "test": "npm run db:setup && jest --runInBand",
     "build": "webpack --stats-modules-space 999",
     "watch": "tsc -w",
-    "start": "ts-node dist/index.js",
-    "dev": "ts-node-dev src/index.ts"
+    "start": "npm run migrate && ts-node dist/index.js",
+    "dev": "npm run migrate && ts-node-dev src/index.ts",
+    "migrate": "ts-node --transpile-only ./node_modules/typeorm/cli.js --config src/typeormConfig.ts migration:run",
+    "generate:migration": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:create -d src/migrations -n"
   },
   "_moduleAliases": {
     "@src": "./src",
