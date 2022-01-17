@@ -20,7 +20,7 @@ export class AttendancesResolver {
 
   @Mutation(() => Attendance)
   async saveAttendance(
-    @Args() {roomId, userId, sessionId, joinTimestamp, leaveTimestamp }: SaveAttendanceArgs
+    @Args() {roomId, userId, sessionId, isTeacher, joinTimestamp, leaveTimestamp }: SaveAttendanceArgs
   ): Promise<Attendance> {
 
     const attendance = new Attendance();
@@ -30,6 +30,7 @@ export class AttendancesResolver {
       attendance.leaveTimestamp = leaveTimestamp;
       attendance.roomId = roomId;
       attendance.userId = userId;
+      attendance.isTeacher = isTeacher;
       await attendance.save();
       
     } catch(e) {

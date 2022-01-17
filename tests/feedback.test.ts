@@ -16,7 +16,7 @@ afterAll(async () => {
 
 describe("queries", () => {
     it("test Save Feedback", async () => {
-      // save attendance
+      // save feedback
       await graphqlRequest({
         source: SAVE_FEEDBACK_MUTATION,
         variableValues: feedbackMockData

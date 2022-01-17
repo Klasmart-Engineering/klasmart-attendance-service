@@ -36,6 +36,9 @@ export class SaveAttendanceArgs {
   @Field(() => Date)
   leaveTimestamp: Date;
 
+  @Field(() => Boolean)
+  isTeacher: Boolean;
+
   @Field(() => String)
   userId: string;
 

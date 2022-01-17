@@ -18,6 +18,10 @@ export class Attendance extends BaseEntity {
     leaveTimestamp!: Date
 
     @Field()
+    @PrimaryColumn({ name: "is_teacher" })
+    isTeacher!: Boolean
+
+    @Field()
     @Index()
     @Column({ name: "room_id", nullable: true })
     roomId?: string
