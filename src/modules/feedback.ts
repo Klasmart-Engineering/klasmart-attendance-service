@@ -3,6 +3,7 @@ import { Feedback, QuickFeedback } from "../entities/feedback";
 import { UserInputError } from "apollo-server-express";
 import { QuickFeedbackType, FeedbackType } from "../types";
 import { SaveFeedbackArgs } from "../entities/argTypes";
+import { getConnection } from "typeorm";
 
 @Resolver(Feedback)
 export class FeedbackResolver{
@@ -37,11 +38,16 @@ export class FeedbackResolver{
         feedback.stars = stars;
         feedback.comment = comment;
         feedback.quickFeedback = feedbackArray;
-        await feedback.save();
+        await getConnection().createQueryBuilder()
+        .insert()
+        .into(Feedback)
+        .values(feedback)
+        .orIgnore()
+        .execute()
     } catch(e) {
         console.log(e);
     }
-    console.log('feedback: ', feedback);
+    console.log("logFeedback", feedback);
     return feedback;
   
   }
