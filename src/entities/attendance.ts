@@ -18,7 +18,7 @@ export class Attendance extends BaseEntity {
     leaveTimestamp!: Date
 
     @Field()
-    @PrimaryColumn({ name: "is_teacher" })
+    @PrimaryColumn({ name: "is_teacher", default: false })
     isTeacher!: Boolean
 
     @Field()
