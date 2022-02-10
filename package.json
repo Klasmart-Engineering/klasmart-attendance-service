@@ -12,10 +12,9 @@
     "build:copy-assets": "cp README.md ./dist && cp package.json ./dist",
     "release": "standard-version --no-verify",
     "watch": "tsc -w",
-    "start": "npm run migrate && ts-node dist/index.js",
-    "dev": "npm run migrate && ts-node-dev src/index.ts",
-    "migrate": "ts-node --transpile-only ./node_modules/typeorm/cli.js --config src/typeormConfig.ts migration:run",
-    "generate:migration": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:create -d src/migrations -n"
+    "start": "ts-node dist/index.js",
+    "dev": "ts-node-dev src/index.ts",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "_moduleAliases": {
     "@src": "./src",
