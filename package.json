@@ -44,7 +44,7 @@
     "ts-jest": "^27.0.5",
     "ts-node-dev": "^1.1.8",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.38",
+    "typeorm": "^0.2.41",
     "webpack-dev-server": "^4.3.1",
     "webpack-node-externals": "^3.0.0"
   },
