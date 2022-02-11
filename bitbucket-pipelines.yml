@@ -29,8 +29,8 @@ pipelines:
 
             - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $DOCKER_REPO_URL
 
-            - mv deploy/Dockerfile.bitbucket-pipeline .
-            - docker build -t kidsloop-attendance-service -f Dockerfile.bitbucket-pipeline .
+            # - mv deploy/Dockerfile.bitbucket-pipeline .
+            - docker build -t kidsloop-attendance-service -f Dockerfile .
 
             - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG
             - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-latest
