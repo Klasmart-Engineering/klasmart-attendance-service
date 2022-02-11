@@ -1,6 +1,5 @@
+import path from "path";
 import { ConnectionOptions } from "typeorm";
-import { Attendance } from "./entities/attendance";
-import { Feedback, QuickFeedback } from "./entities/feedback";
 export const connOptions: ConnectionOptions = {
   name: "default",
   type: "postgres",
@@ -9,8 +8,8 @@ export const connOptions: ConnectionOptions = {
     "postgres://postgres:kidsloop@localhost",
   synchronize: false,
   logging: Boolean(process.env.DATABASE_LOGGING),
-  entities: [Attendance, Feedback, QuickFeedback],
-  migrations: ["src/migrations/*.{ts,js}", "dist/migrations/*.{ts,js}"],
+  entities: [path.join(__dirname, "./entities/*.{ts,js}")],
+  migrations: [path.join(__dirname, "./migrations/*.{ts,js}")],
   migrationsTableName: "migrations",
   migrationsRun: true,
   cli: {
