@@ -6,7 +6,10 @@
   "scripts": {
     "db:setup": "ts-node tests/utils/setup.ts",
     "test": "npm run db:setup && jest --runInBand",
-    "build": "webpack --stats-modules-space 999",
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && npm run build:compile && npm run build:copy-assets",
+    "build:compile": "tsc -p tsconfig.json --outDir ./dist",
+    "build:copy-assets": "cp README.md ./dist && cp package.json ./dist",
     "watch": "tsc -w",
     "start": "npm run migrate && ts-node dist/index.js",
     "dev": "npm run migrate && ts-node-dev src/index.ts",
