@@ -4,6 +4,7 @@ export const attendanceMockData = {
   roomId: getUniqueId(),
   userId: getUniqueId(),
   sessionId: getUniqueId(),
+  isTeacher: false,
   joinTimestamp: "2021-10-08T20:48:40.446Z",
   leaveTimestamp: "2021-10-08T20:48:40.446Z",
 };

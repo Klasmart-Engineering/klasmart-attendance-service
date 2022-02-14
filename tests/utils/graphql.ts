@@ -1,8 +1,9 @@
 export const SAVE_ATTENDANCE_MUTATION = `
-  mutation saveAttendance($userId: String!, $leaveTimestamp: DateTime!, $joinTimestamp: DateTime!, $sessionId: String!, $roomId: String!) {
-      saveAttendance(userId: $userId, leaveTimestamp: $leaveTimestamp, joinTimestamp: $joinTimestamp, sessionId: $sessionId, roomId: $roomId) {
+  mutation saveAttendance($userId: String!, $isTeacher: Boolean!, $leaveTimestamp: DateTime!, $joinTimestamp: DateTime!, $sessionId: String!, $roomId: String!) {
+      saveAttendance(userId: $userId, isTeacher: $isTeacher, leaveTimestamp: $leaveTimestamp, joinTimestamp: $joinTimestamp, sessionId: $sessionId, roomId: $roomId) {
         roomId,
         userId,
+        isTeacher,
         sessionId,
         joinTimestamp,
         leaveTimestamp,
@@ -15,6 +16,7 @@ export const GET_CLASS_ATTENDANCE_QUERY = `
     getClassAttendance(roomId: $roomId) {
       roomId
       userId
+      isTeacher
       sessionId
       joinTimestamp
       leaveTimestamp
@@ -27,6 +29,7 @@ export const GET_USER_ATTENDANCE_QUERY = `
     getUserAttendance(userId: $userId) {
       roomId
       userId
+      isTeacher
       sessionId
       joinTimestamp
       leaveTimestamp
