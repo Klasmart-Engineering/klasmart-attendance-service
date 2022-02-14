@@ -151,7 +151,6 @@ pipelines:
       - step: *npm-install-and-build
       - step:
           name: "🚀 Docker build + push to ECR"
-          deployment: alpha
           image: python:3.9-alpine
           services:
             - docker
