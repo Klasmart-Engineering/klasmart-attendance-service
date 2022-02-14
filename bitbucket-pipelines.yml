@@ -129,7 +129,7 @@ pipelines:
     "**": # This runs as default for any branch not elsewhere defined.:
       - step: *npm-install-and-test
       - step: *npm-build
-      - step: *docker-build-and-run
+      # - step: *docker-build-and-run
 
   branches:
     master:
