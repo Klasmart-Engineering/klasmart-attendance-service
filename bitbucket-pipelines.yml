@@ -42,6 +42,9 @@ definitions:
         - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
         - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$COMMIT_TAG
 
+        - docker push $REPO:$MAJOR_VERSION
+        - docker push $REPO:$MINOR_VERSION
+        - docker push $REPO:$BITBUCKET_TAG
         - docker push $REPO:$BRANCH_TAG
         - docker push $REPO:$BRANCH_TAG-latest
         - docker push $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
@@ -137,7 +140,6 @@ pipelines:
     master:
       - step: *npm-install-and-test
       - step: *npm-build
-      # - step: *version-release
 
     alpha:
       - step: *npm-install-and-test
