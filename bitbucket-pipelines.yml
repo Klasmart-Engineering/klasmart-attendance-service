@@ -1,71 +1,155 @@
-pipelines:
-  branches:
-    master:
-      - step: &step-secret-check
-          name: 🔒 Atlassian Security Secrets Scan
-          script:
-            - pipe: atlassian/git-secrets-scan:0.5.1
-      - step: &step-build-npm
-          name: "⚡ Build NPM"
-          image: node:lts
-          script:
-            - npm ci
-            - npm prune --production
-            - npm run build
-          caches:
-            - nodemodules
-          artifacts:
-            - node_modules/**
-            - dist/**
-      - step: &step-build-docker
-          name: "🚀 Build & Push Docker image"
-          image: python:3.7.4-alpine3.10
-          script:
-            - pip3 install -U awscli
-
-            - export BRANCH_TAG=$(echo "$BITBUCKET_BRANCH" | sed -E 's/([^0-9a-zA-Z]+)/-/g' | awk '{print tolower($0)}')
-            - export REPO=$DOCKER_REPO_URL/kidsloop-attendance-service # DOCKER_REPO_URL is workspace wide variable
-            - export COMMIT_TAG=$(echo $BITBUCKET_COMMIT | cut -c1-7)
-            - printf '"Git tag":"%s", "Git commit":"%s" "ECR repo":"%s"' $BRANCH_TAG $COMMIT_TAG $REPO
-
-            - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $DOCKER_REPO_URL
-
-            # - mv deploy/Dockerfile.bitbucket-pipeline .
-            - docker build -t kidsloop-attendance-service -f Dockerfile .
-
-            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG
-            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-latest
-            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
-            - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$COMMIT_TAG
-
-            - docker push $REPO:$BRANCH_TAG
-            - docker push $REPO:$BRANCH_TAG-latest
-            - docker push $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
-            - docker push $REPO:$BRANCH_TAG-$COMMIT_TAG
-          services:
-            - docker
-          caches:
-            - docker
-    alpha:
-      - step: *step-secret-check
-      - step: *step-build-npm
-      - step: *step-build-docker
-
-  
-  pull-requests:
-    '**':
-      - step: *step-secret-check
-      - step: *step-build-npm
-      - step:
-          name: "🐳 Build Docker image"
-          image: python:3.7.4-alpine3.10
-          services:
-            - docker
-          caches:
-            - docker
-          script:
-            - docker build -t kidsloop-attendance-service -f Dockerfile .
+options:
+  docker: true
+  size: 2x
 
 definitions:
+  services:
+    docker:
+      memory: 4096
+    postgres:
+      image: postgres
+      environment:
+        POSTGRES_DB: test_attendance_db
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: attendance
+    redis:
+      image: redis
   caches:
     nodemodules: ./node_modules
+  scripts:
+    - script:
+        - &skip-bitbucket-authored-commits '[[ $(git log -1 --pretty=%an) == "bitbucket-pipelines" ]] && echo "Commit author is bitbucket-pipelines - exiting Pipeline" && exit 0'
+    - script: &docker-push-to-aws
+        - pip3 install -U awscli
+
+        - export BRANCH_TAG=$([[ ! -z "$BITBUCKET_BRANCH" ]] && echo "$BITBUCKET_BRANCH" | sed -E 's/([^0-9a-zA-Z]+)/-/g' | awk '{print tolower($0)}' || echo "master")
+        - export REPO=$DOCKER_REPO_URL/kidsloop-attendance-service # DOCKER_REPO_URL is workspace wide variable
+        - export COMMIT_TAG=$(echo $BITBUCKET_COMMIT | cut -c1-7)
+        - printf '"Git tag":"%s", "Git branch":"%s", "Git commit":"%s" "ECR repo":"%s"' $BITBUCKET_TAG $BRANCH_TAG $COMMIT_TAG $REPO
+        - aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $DOCKER_REPO_URL
+        - export MAJOR_VERSION=$(echo $BITBUCKET_TAG | grep -o "[v][0-9]")
+        - export MINOR_VERSION=$(echo $BITBUCKET_TAG | grep -o "[v][0-9].[0-9]")
+        - export PATCH_VERSION=$(echo $BITBUCKET_TAG | grep -o "[v][0-9].[0-9].[0-9]")
+        - echo "$MAJOR_VERSION, $MINOR_VERSION, $PATCH_VERSION"
+
+        # - mv deploy/Dockerfile.bitbucket-pipeline .
+        - docker build -t kidsloop-attendance-service -f Dockerfile .
+        - docker tag kidsloop-attendance-service:latest $REPO:$MAJOR_VERSION
+        - docker tag kidsloop-attendance-service:latest $REPO:$MINOR_VERSION
+        - docker tag kidsloop-attendance-service:latest $REPO:$BITBUCKET_TAG
+        - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG
+        - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-latest
+        - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
+        - docker tag kidsloop-attendance-service:latest $REPO:$BRANCH_TAG-$COMMIT_TAG
+
+        - docker push $REPO:$BRANCH_TAG
+        - docker push $REPO:$BRANCH_TAG-latest
+        - docker push $REPO:$BRANCH_TAG-$BITBUCKET_BUILD_NUMBER
+        - docker push $REPO:$BRANCH_TAG-$COMMIT_TAG
+      services:
+        - docker
+      caches:
+        - docker
+
+  steps:
+    - step: &npm-install-and-test
+        name: "⚡ npm install and test"
+        image: node:16
+        services:
+          - postgres
+          - redis
+        script:
+          - *skip-bitbucket-authored-commits
+          - export HUSKY=0
+          - npm i
+          - npm run test:unit
+        caches:
+          - nodemodules
+        artifacts:
+          - node_modules/**
+
+    - step: &npm-build
+        name: "⚡ npm build"
+        image: node:16
+        script:
+          - *skip-bitbucket-authored-commits
+          - npm run build
+        artifacts:
+          - dist/**
+
+    - step: &docker-build-and-run
+        name: "🐳 docker build and run"
+        image: python:3.9-alpine
+        services:
+          - postgres
+          - redis
+          - docker
+        size: 2x
+        script:
+          - apk add --no-cache git
+          - *skip-bitbucket-authored-commits
+          - /bin/sh ./scripts/run-container.sh
+
+    - step: &version-release
+        name: "🏷️ Release Version Bump"
+        image: node:16
+        caches:
+          - nodemodules
+        script:
+          - *skip-bitbucket-authored-commits
+          - if [[ $BITBUCKET_BRANCH != master ]] && [[ $BITBUCKET_BRANCH != alpha ]]; then echo "This can only be performed on master branch" && exit 1; fi
+
+          - npm run release
+          - export VERSION_TAG=$(git describe --tags)
+          - 'echo "New release version: $VERSION_TAG - $(git log -1 --pretty=%h%B)"'
+          - export TAG_EXISTS=$(git ls-remote origin refs/tags/$VERSION_TAG)
+          - '[[ ! -z "$TAG_EXISTS" ]] && echo "$VERSION_TAG already exists" && exit 1'
+          # - '[[ ! -z "$TAG_EXISTS" ]] && echo "Delete remote tag $VERSION_TAG" && git push --delete origin "$VERSION_TAG"'
+          - git push origin alpha
+          - git push origin --tags
+
+    - step: &npm-install-and-build
+        name: "⚡ npm install and build"
+        image: node:16-alpine
+        script:
+          - npm i
+          - npm run build
+          - npm prune --production
+        caches:
+          - nodemodules
+        artifacts:
+          - node_modules/**
+          - dist/**
+
+pipelines:
+  pull-requests:
+    "**": # This runs as default for any branch not elsewhere defined.:
+      - step: *npm-install-and-test
+      - step:
+          name: "📝 Conventional Commits check"
+          image: node:lts
+          script:
+            - /bin/bash commitlint-pipeline-check.sh
+      - step: *npm-build
+      - step: *docker-build-and-run
+
+  branches:
+    master:
+      - step: *npm-install-and-test
+      - step: *npm-build
+      # - step: *version-release
+
+    alpha:
+      - step: *npm-install-and-test
+      - step: *npm-build
+      - step: *version-release
+
+  tags:
+    "*":
+      - step: *npm-install-and-build
+      - step:
+          name: "🚀 Docker build + push to ECR"
+          image: python:3.9-alpine
+          services:
+            - docker
+          script: *docker-push-to-aws
