@@ -32,6 +32,7 @@ describe("queries", () => {
       expect(singleClassAttendace).toMatchObject({
             roomId: attendanceMockData.roomId,
             userId: attendanceMockData.userId,
+            isTeacher: attendanceMockData.isTeacher,
             sessionId: attendanceMockData.sessionId,
             joinTimestamp: attendanceMockData.joinTimestamp,
             leaveTimestamp: attendanceMockData.leaveTimestamp
@@ -47,6 +48,7 @@ describe("queries", () => {
       expect(singleUserAttendace).toMatchObject({
             roomId: attendanceMockData.roomId,
             userId: attendanceMockData.userId,
+            isTeacher: attendanceMockData.isTeacher,
             sessionId: attendanceMockData.sessionId,
             joinTimestamp: attendanceMockData.joinTimestamp,
             leaveTimestamp: attendanceMockData.leaveTimestamp
