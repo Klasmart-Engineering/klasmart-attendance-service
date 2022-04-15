@@ -9,12 +9,12 @@ export class AttendanceUpdate1641536505691 implements MigrationInterface {
                 WHERE 
                     table_name='attendance' and column_name='is_teacher';`);
         if(query.length === 0){
-            await queryRunner.query(`ALTER TABLE attendance ADD COLUMN "is_teacher" BOOLEAN DEFAULT FALSE`);
+            await queryRunner.query("ALTER TABLE attendance ADD COLUMN \"is_teacher\" BOOLEAN DEFAULT FALSE");
         }
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE attendance DROP "is_teacher"`);
+        await queryRunner.query("ALTER TABLE attendance DROP \"is_teacher\"");
     }
 
 }
