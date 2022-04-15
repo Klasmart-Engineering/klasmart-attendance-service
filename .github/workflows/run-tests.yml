@@ -22,7 +22,7 @@ jobs:
           POSTGRES_PORT: 5432
           POSTGRES_DB: test_attendance_db
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: attendance
+          POSTGRES_PASSWORD: kidsloop
         options: >-
           --health-cmd pg_isready
           --health-interval 10s

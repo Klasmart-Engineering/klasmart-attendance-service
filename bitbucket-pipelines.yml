@@ -11,7 +11,7 @@ definitions:
       environment:
         POSTGRES_DB: test_attendance_db
         POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: kidsloop
+        POSTGRES_PASSWORD: attendance
     redis:
       image: redis
   caches:
