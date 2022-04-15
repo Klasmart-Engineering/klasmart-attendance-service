@@ -18,4 +18,4 @@ jobs:
 
   test:
     needs: [install, lint, conventional-pr-title]
-    uses: ./.github/workflows/run-tests.yml
+    uses: ./run-tests.yml
