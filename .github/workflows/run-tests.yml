@@ -4,12 +4,6 @@ concurrency:
   group: runtests
   cancel-in-progress: true
 
-on:
-  push:
-    branches: [master, setup-github-workflow]
-  pull_request:
-    branches: [master, setup-github-workflow]
-
 jobs:
   install:
     uses: KL-Engineering/github-action-workflows/.github/workflows/npm-ci.yml@v3.0.1
