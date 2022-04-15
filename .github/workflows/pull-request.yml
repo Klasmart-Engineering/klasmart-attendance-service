@@ -18,4 +18,4 @@ jobs:
 
   test:
     needs: [install, lint, conventional-pr-title]
-    uses: ./run-tests.yml
+    uses: KL-Engineering/kidsloop-attendance-service/.github/workflows/run-tests.yml@v1.1.0
