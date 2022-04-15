@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "db:setup": "ts-node tests/utils/setup.ts",
-    "test:unit": "npm run db:setup && jest --runInBand",
+    "test:unit": "npm run db:setup && jest --runInBand --coverage --forceExit",
+    "test": "npm run test:unit",
     "clean": "rm -rf ./dist",
     "build": "npm run clean && npm run build:compile && npm run build:copy-assets",
     "build:compile": "tsc -p tsconfig.json --outDir ./dist",
