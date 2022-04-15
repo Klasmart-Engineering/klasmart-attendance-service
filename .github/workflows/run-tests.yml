@@ -1,15 +1,10 @@
 name: Run Tests
 
-concurrency:
-  group: runtests
-  cancel-in-progress: true
-
 on:
   workflow_call:
 
 jobs:
   test:
-    needs: [install]
     name: ⚡ Run tests
     runs-on: ubuntu-latest
     services:
