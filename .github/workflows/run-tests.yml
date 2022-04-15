@@ -6,11 +6,9 @@ concurrency:
 
 on:
   push:
-    branches:
-      - master
+    branches: [master, setup-github-workflow]
   pull_request:
-    branches:
-      - master
+    branches: [master, setup-github-workflow]
 
 jobs:
   install:
