@@ -8,39 +8,39 @@ export class Feedback extends BaseEntity {
 
     @Field()
     @PrimaryColumn({ name: "session_id" })
-    sessionId!: string
+        sessionId!: string;
 
     @Field()
     @CreateDateColumn({ name: "created_at"})
-    createdAt!: Date
+        createdAt!: Date;
 
     @Field()
     @Index()
     @Column({ name: "room_id", nullable: true })
-    roomId?: string
+        roomId?: string;
     
     @Field()
     @Index()
     @Column({ name: "user_id" })
-    userId!: string
+        userId!: string;
 
     @Field()
     @Column({
         type: "enum",
         enum: FeedbackType,
     })
-    type!: string
+        type!: string;
 
     @Field()
     @Column({ name: "stars" })
-    stars!: number
+        stars!: number;
 
     @Field()
     @Column({ name: "comment", nullable: true })
-    comment?: string 
+        comment?: string; 
 
     @OneToMany(() => QuickFeedback, quickFeedback => quickFeedback.feedback, { cascade: true })
-    quickFeedback?: QuickFeedback[];
+        quickFeedback?: QuickFeedback[];
 }
 
 @InputType()
@@ -48,34 +48,34 @@ export class Feedback extends BaseEntity {
 export class QuickFeedback extends BaseEntity {    
 
     @PrimaryGeneratedColumn()
-    id: number;
+        id: number;
 
     @Field()
     @CreateDateColumn({ name: "created_at"})
-    createdAt!: Date
+        createdAt!: Date;
 
     @Field()
     @Column({
         type: "enum",
         enum: QuickFeedbackType,
     })
-    type!: string
+        type!: string;
 
     @Field()
     @Column({ name: "stars" })
-    stars!: number
+        stars!: number;
 
     @ManyToOne(() => Feedback, feedback => feedback.quickFeedback)
-    feedback?: Feedback;
+        feedback?: Feedback;
 }
 
 
 @InputType()
 export class QuickFeedbackInputType {
     @Field()
-    type: string;
+        type: string;
     
     @Field()
-    stars: number;
+        stars: number;
 }
   

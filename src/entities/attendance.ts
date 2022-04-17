@@ -6,27 +6,27 @@ import { BaseEntity, Column, Entity, PrimaryColumn, Index } from "typeorm";
 export class Attendance extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: "session_id" })
-  sessionId!: string;
+      sessionId!: string;
 
   @Field()
   @PrimaryColumn({ name: "join_timestamp" })
-  joinTimestamp!: Date;
+      joinTimestamp!: Date;
 
   @Field()
   @PrimaryColumn({ name: "leave_timestamp" })
-  leaveTimestamp!: Date;
+      leaveTimestamp!: Date;
 
   @Field()
   @PrimaryColumn({ name: "is_teacher", default: false })
-  isTeacher!: Boolean
+      isTeacher!: boolean;
 
   @Field()
   @Index()
   @Column({ name: "room_id", nullable: true })
-  roomId?: string
+      roomId?: string;
   
   @Field()
   @Index()
   @Column({ name: "user_id" })
-  userId!: string
+      userId!: string;
 }

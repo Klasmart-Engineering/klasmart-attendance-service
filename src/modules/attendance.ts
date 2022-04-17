@@ -7,15 +7,15 @@ import { SaveAttendanceArgs } from "../entities/argTypes";
 export class AttendancesResolver {
 
   @Query(() => [Attendance])
-  async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
-    const attendance = await getRepository(Attendance).find({ roomId });
-    return attendance;
-  }
+    async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
+        const attendance = await getRepository(Attendance).find({ roomId });
+        return attendance;
+    }
 
   @Query(() => [Attendance])
   async getUserAttendance(@Arg("userId") userId: string): Promise<Attendance[]> {
-    const attendance = await getRepository(Attendance).find({ userId });
-    return attendance;
+      const attendance = await getRepository(Attendance).find({ userId });
+      return attendance;
   }
 
   @Mutation(() => Attendance)
@@ -23,26 +23,26 @@ export class AttendancesResolver {
     @Args() {roomId, userId, sessionId, isTeacher, joinTimestamp, leaveTimestamp }: SaveAttendanceArgs
   ): Promise<Attendance> {
 
-    const attendance = new Attendance();
-    try {
-      attendance.sessionId = sessionId;
-      attendance.joinTimestamp = joinTimestamp;
-      attendance.leaveTimestamp = leaveTimestamp;
-      attendance.roomId = roomId;
-      attendance.userId = userId;
-      attendance.isTeacher = isTeacher;
-      await getConnection().createQueryBuilder()
-      .insert()
-      .into(Attendance)
-      .values(attendance)
-      .orIgnore()
-      .execute();
-    } catch(e) {
-      console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
-      console.log(e);
+      const attendance = new Attendance();
+      try {
+          attendance.sessionId = sessionId;
+          attendance.joinTimestamp = joinTimestamp;
+          attendance.leaveTimestamp = leaveTimestamp;
+          attendance.roomId = roomId;
+          attendance.userId = userId;
+          attendance.isTeacher = isTeacher;
+          await getConnection().createQueryBuilder()
+              .insert()
+              .into(Attendance)
+              .values(attendance)
+              .orIgnore()
+              .execute();
+      } catch(e) {
+          console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
+          console.log(e);
       
-    }
-    console.log("logAttendance", attendance);
-    return attendance;
+      }
+      console.log("logAttendance", attendance);
+      return attendance;
   }
 }
