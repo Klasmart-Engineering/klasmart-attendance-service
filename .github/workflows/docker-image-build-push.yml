@@ -1,0 +1,77 @@
+name: (Job) docker build & push to ECR
+# Builds a Docker image and uploads it to ECR
+#
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      region:
+        required: true
+        type: string
+      ecr_repository:
+        required: true
+        type: string
+      dockerfile_dir:
+        type: string
+        required: true
+        default: deploy/
+      dockerfile_name:
+        required: false
+        type: string
+        default: Dockerfile
+      dockerfile_context:
+        required: false
+        type: string
+        default: .
+      ecr_aws_region:
+        required: false
+        type: string
+        default: eu-west-2
+      ecr_registry:
+        required: false
+        type: string
+        default: 942095822719.dkr.ecr.eu-west-2.amazonaws.com
+    secrets:
+      ECR_AWS_ACCESS_KEY_ID:
+        required: true
+      ECR_AWS_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  build:
+    name: Create deployable container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ inputs.ecr_aws_region }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Container
+        env:
+          ECR_REGISTRY: ${{ inputs.ecr_registry }}
+          ECR_REPOSITORY: ${{ inputs.ecr_repository }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          REGION: ${{ inputs.region }}
+        run: |
+          set +x
+          export ENV_TAG=$(echo "${{ env.REGION }}-${{ env.ENVIRONMENT }}" | sed -E 's/([^0-9a-zA-Z\.]+)/-/g' | awk '{print tolower($0)}')
+          export BRANCH_TAG=$(echo "${GITHUB_REF_NAME}" | sed -E 's/([^0-9a-zA-Z\.]+)/-/g' | awk '{print tolower($0)}')
+          printf '"BRANCH_TAG":"%s", "ENV_TAG":"%s", "Git commit":"%s"' $BRANCH_TAG $ENV_TAG ${GITHUB_SHA::7}
+          docker build -t $ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest -f ${{ inputs.dockerfile_dir }}/${{ inputs.dockerfile_name }} ${{ inputs.dockerfile_context }}
+          docker tag $ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest
+          docker tag $ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-${GITHUB_SHA::7}
+          docker tag $ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG-latest
+          docker tag $ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest $ECR_REGISTRY/$ECR_REPOSITORY:alpha-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG-$ENV_TAG-${GITHUB_SHA::7}
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_TAG-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:alpha-latest
