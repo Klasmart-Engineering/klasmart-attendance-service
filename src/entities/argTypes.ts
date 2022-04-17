@@ -4,44 +4,44 @@ import { QuickFeedbackInputType } from "./feedback";
 @ArgsType()
 export class SaveFeedbackArgs {
   @Field(() => String)
-  roomId: string;
+      roomId: string;
 
   @Field(() => String)
-  userId: string;
+      userId: string;
 
   @Field(() => String)
-  sessionId: string;
+      sessionId: string;
 
   @Field(() => Int)
-  stars: number;
+      stars: number;
 
   @Field(() => String)
-  feedbackType: string;
+      feedbackType: string;
 
   @Field(() => String)
-  comment: string;
+      comment: string;
 
   @Field(() => [QuickFeedbackInputType])
-  quickFeedback: QuickFeedbackInputType[]
+      quickFeedback: QuickFeedbackInputType[];
 }
 
 @ArgsType()
 export class SaveAttendanceArgs {
   @Field(() => String)
-  sessionId: string;
+      sessionId: string;
 
   @Field(() => Date)
-  joinTimestamp: Date;
+      joinTimestamp: Date;
 
   @Field(() => Date)
-  leaveTimestamp: Date;
+      leaveTimestamp: Date;
 
   @Field(() => Boolean)
-  isTeacher: Boolean;
+      isTeacher: boolean;
 
   @Field(() => String)
-  userId: string;
+      userId: string;
 
   @Field(() => String, {nullable: true})
-  roomId: string;
+      roomId: string;
 }
