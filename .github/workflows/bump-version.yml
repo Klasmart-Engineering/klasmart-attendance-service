@@ -46,6 +46,7 @@ jobs:
       - name: NPM Build
         id: npm-build
         run: npm run build
+      - uses: actions/checkout@v2
       - name: Build and Push Container
         uses: ./.github/workflows/docker-image-build-push.yml
         with:
