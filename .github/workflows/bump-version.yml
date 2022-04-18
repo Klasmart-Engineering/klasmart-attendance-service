@@ -28,6 +28,9 @@ jobs:
     needs: [generate-version]
     runs-on: ubuntu-latest
     steps:
+      - uses: KL-Engineering/github-action-workflows/.github/actions/npm-ci@fd75ae138cbb40d666d49b091ec2a4220a0ebeb3
+        with:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - name: NPM Build
         id: npm-build
         run: npm run build
