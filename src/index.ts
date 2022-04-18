@@ -2,7 +2,6 @@ import "newrelic";
 import newRelicApolloPlugin from "@newrelic/apollo-server-plugin";
 import dotenv from "dotenv";
 import "reflect-metadata";
-import "module-alias/register";
 import { ApolloServer } from "apollo-server-express";
 import  Express from "express";
 import { connOptions } from "./typeormConfig";
