@@ -18,7 +18,7 @@ jobs:
 
   generate-version:
     if: ${{ github.event.pull_request.merged }}
-    needs: [test]
+    needs: [install]
     uses: KL-Engineering/github-action-workflows/.github/workflows/npm-generate-version.yml@fd75ae138cbb40d666d49b091ec2a4220a0ebeb3
     secrets:
       NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
