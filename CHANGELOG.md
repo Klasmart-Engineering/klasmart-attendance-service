@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.7](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.6...v1.4.7) (2022-04-21)
+
+
+### Bug Fixes
+
+* use alpine image to reduce docker image size ([2a28b73](https://bitbucket.org/calmisland/kidsloop-attendance-service/commit/2a28b734c55447c95ef1b1bac421bcbf0f446a3e))
+
 ### [1.4.6](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.5...v1.4.6) (2022-04-21)
 
 
