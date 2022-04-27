@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.9](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.8...v1.4.9) (2022-04-27)
+
+
+### Bug Fixes
+
+* attendance task definition parsing updated ([16dd33d](https://bitbucket.org/calmisland/kidsloop-attendance-service/commit/16dd33d10c7a6591fabf682d37df088bb9e25a27))
+
 ### [1.4.8](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.7...v1.4.8) (2022-04-26)
 
 ### [1.4.7](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.6...v1.4.7) (2022-04-21)
