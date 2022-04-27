@@ -72,15 +72,10 @@ jobs:
           )
           SERVICE_JSON=$(aws ecs describe-services --services ${ECS_SERVICE} --cluster ${ECS_CLUSTER})
           TASK_DEFINITION_JSON=$(aws ecs describe-task-definition --task-definition ${ECS_SERVICE})
-          CURRENT_IMAGE=$(
-            echo ${TASK_DEFINITION_JSON} \
-              | jq --raw-output ".taskDefinition.containerDefinitions[] | select(.name == \"${ECS_SERVICE}\") | .image"
-          )
+          CURRENT_IMAGE=$(echo ${TASK_DEFINITION_JSON} | jq --raw-output ".taskDefinition.containerDefinitions[].image")
           NEW_IMAGE=$(echo $CURRENT_IMAGE | sed "s#:.*#:$TARGET_OCITAG#g")
           NEW_TASK_DEFINITION_JSON=$(echo $TASK_DEFINITION_JSON | sed "s#$CURRENT_IMAGE#$NEW_IMAGE#g")
-          echo $NEW_TASK_DEFINITION_JSON > ./tmp.json
-          cat ./tmp.json | jq .taskDefinition | jq 'with_entries(select([.key] | inside(["placementConstraints","taskRoleArn","volumes","requiresCompatibilities","cpu","memory","networkMode","family", "containerDefinitions", "executionRoleArn"])))' > ./newImage.json
-          rm -rf ./tmp.json
+          echo $NEW_TASK_DEFINITION_JSON | jq .taskDefinition | jq 'with_entries(select([.key] | inside(["placementConstraints","taskRoleArn","volumes","requiresCompatibilities","cpu","memory","networkMode","family", "containerDefinitions", "executionRoleArn"])))' > ./newImage.json
           echo "new IMAGE"
           echo "==="
           UPDATED_TASK_DEF=$(aws ecs register-task-definition --cli-input-json file://newImage.json)
