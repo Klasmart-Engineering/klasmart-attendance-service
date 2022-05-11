@@ -20,3 +20,9 @@ export const getRandomQuickFeedbackType  = () => {
   const x = getRandomNumber(4);
   return candidates[x];
 }
+
+export const getTime = (minutes: number=0) => {
+  const date = new Date()
+  date.setMinutes(date.getMinutes() + minutes);
+  return Math.floor(date.getTime()/1000);
+}
