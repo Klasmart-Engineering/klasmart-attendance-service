@@ -45,7 +45,7 @@ export class FeedbackResolver{
                 .orIgnore()
                 .execute();
         } catch(e) {
-            console.log(e);
+            console.log("Unable to save feedback: ", e);
         }
         console.log("logFeedback", feedback);
         return feedback;

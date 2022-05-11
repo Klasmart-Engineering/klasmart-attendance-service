@@ -2,7 +2,7 @@ import { Query, Mutation, Resolver,  Arg, Args } from "type-graphql";
 import { Attendance } from "../entities/attendance";
 import { getRepository, getConnection } from "typeorm";
 import { SaveAttendanceArgs } from "../entities/argTypes";
-
+import { attendanceService } from "../index";
 @Resolver(Attendance)
 export class AttendancesResolver {
 
@@ -21,7 +21,7 @@ export class AttendancesResolver {
   @Mutation(() => Attendance)
   async saveAttendance(
     @Args() {roomId, userId, sessionId, isTeacher, joinTimestamp, leaveTimestamp }: SaveAttendanceArgs
-  ): Promise<Attendance> {
+  ): Promise<Attendance|undefined> {
 
       const attendance = new Attendance();
       try {
@@ -37,12 +37,41 @@ export class AttendancesResolver {
               .values(attendance)
               .orIgnore()
               .execute();
+        console.log("logAttendance", attendance);
+        return attendance;
       } catch(e) {
           console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
           console.log(e);
-      
+
       }
-      console.log("logAttendance", attendance);
-      return attendance;
+      return;
+  }
+
+  @Mutation(() => Boolean)
+  async sendAttendance(
+    @Arg("roomId", {nullable: false})  roomId: string 
+  ): Promise<boolean> {
+      try{
+          console.log("sendAttendance: ", roomId);
+          const res = await attendanceService.send(roomId);
+          return res;
+      }catch (e) {
+          console.log("Error while sending attendance to CMS sevice: ", e);
+          return false;
+      }
+  }
+
+  @Mutation(() => Boolean)
+  async scheduleAttendance(
+    @Arg("roomId", {nullable: false})  roomId: string
+  ): Promise<boolean> {
+      try{
+          console.log("scheduleAttenance: ", roomId);
+          const res = await attendanceService.schedule(roomId);
+          return res;
+      } catch (e) {
+          console.log("Error while adding class to scheduler: ", e);
+          return false;
+      }
   }
 }
