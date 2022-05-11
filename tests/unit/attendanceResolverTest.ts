@@ -11,11 +11,4 @@ export const attendanceResolverTest = () => {
     const res = await attendancesResolver.saveAttendance(studentData);
     expect(res).toMatchObject(studentData);
   })
-
-  // it("test AttendancesResolver.sendAttendance", async () => {
-  //   const attendancesResolver = new AttendancesResolver();
-  //   const roomId = getUniqueId();
-  //   const res = await attendancesResolver.sendAttendance(roomId);
-  //   expect(res).toBeFalsy();
-  // })
 }

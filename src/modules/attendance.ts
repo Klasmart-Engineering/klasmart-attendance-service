@@ -7,10 +7,10 @@ import { attendanceService } from "../index";
 export class AttendancesResolver {
 
   @Query(() => [Attendance])
-    async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
-        const attendance = await getRepository(Attendance).find({ roomId });
-        return attendance;
-    }
+  async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
+      const attendance = await getRepository(Attendance).find({ roomId });
+      return attendance;
+  }
 
   @Query(() => [Attendance])
   async getUserAttendance(@Arg("userId") userId: string): Promise<Attendance[]> {
