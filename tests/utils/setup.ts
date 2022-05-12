@@ -1,3 +1,3 @@
 import { connectPostgres } from "./postgresDB";
 
-connectPostgres(true).then(() => process.exit());
+connectPostgres(false).then(() => process.exit());
