@@ -7,10 +7,10 @@ import { attendanceService } from "../index";
 export class AttendancesResolver {
 
   @Query(() => [Attendance])
-  async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
-      const attendance = await getRepository(Attendance).find({ roomId });
-      return attendance;
-  }
+    async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
+        const attendance = await getRepository(Attendance).find({ roomId });
+        return attendance;
+    }
 
   @Query(() => [Attendance])
   async getUserAttendance(@Arg("userId") userId: string): Promise<Attendance[]> {
@@ -37,8 +37,8 @@ export class AttendancesResolver {
               .values(attendance)
               .orIgnore()
               .execute();
-        console.log("logAttendance", attendance);
-        return attendance;
+          console.log("logAttendance", attendance);
+          return attendance;
       } catch(e) {
           console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
           console.log(e);
