@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.9...v1.5.0) (2022-05-12)
+
+
+### Features
+
+* bring schedule and related API from live backend ([83be5bf](https://bitbucket.org/calmisland/kidsloop-attendance-service/commit/83be5bfd018508639d1421fc3aacbc99fad2c6cb))
+
 ### [1.4.9](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.4.8...v1.4.9) (2022-04-27)
 
 
