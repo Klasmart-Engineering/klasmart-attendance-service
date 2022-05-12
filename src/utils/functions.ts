@@ -1,5 +1,6 @@
-import { Session } from "../types";
 import Redis from "ioredis";
+import { Cluster }  from "ioredis";
+import { Session } from "../types";
 
 export function convertSessionRecordToSession(session: Record<string, string>): Session {
     return {
@@ -16,14 +17,14 @@ export function convertSessionRecordToSession(session: Record<string, string>): 
 
 export  async function createRedisClient() {
     const redisMode = process.env.REDIS_MODE ?? "NODE";
-    const port = Number(process.env.REDIS_PORT) || undefined;
-    const host = process.env.REDIS_HOST;
+    const port = Number(process.env.REDIS_PORT) || 6379;
+    const host = process.env.REDIS_HOST || "localhost";
     const password = process.env.REDIS_PASS;
     const lazyConnect = true;
 
-    let redis: Redis.Redis | Redis.Cluster;
+    let redis: Redis | Cluster;
     if (redisMode === "CLUSTER") {
-        redis = new Redis.Cluster([
+        redis = new Cluster([
             {
                 port,
                 host,

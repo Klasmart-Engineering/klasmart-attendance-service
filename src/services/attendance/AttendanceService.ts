@@ -1,3 +1,7 @@
+import Redis from "ioredis";
+import { Cluster } from "ioredis";
+import { getRepository, getConnection } from "typeorm";
+import axios from "axios";
 import {generateToken} from "../../jwt";
 import {
     ClassType,
@@ -5,17 +9,14 @@ import {
     AttendanceRequestType
 } from "../../types";
 import { Attendance } from "../../entities/attendance";
-import { getRepository, getConnection } from "typeorm";
 import { Pipeline } from "../../pipeline";
 import {RedisKeys} from "../../redisKeys";
-import axios from "axios";
-import Redis from "ioredis";
 import { convertSessionRecordToSession } from "../../utils/functions";
 
 export class AttendanceService {
-    private client: Redis.Redis | Redis.Cluster;
+    private client: Redis | Cluster;
 
-    constructor(redis: Redis.Redis | Redis.Cluster) {
+    constructor(redis: Redis | Cluster) {
         this.client = redis;
         setInterval(() => {
             this.checkSchedules();
@@ -209,8 +210,11 @@ export class AttendanceService {
                 await pipeline.hgetall(key);
             }
             const sessions = await pipeline.exec();
-            for (const [, session] of sessions) {
-                yield convertSessionRecordToSession(session);
+            if(sessions){
+                for (const [, session] of sessions) {
+                    const sess = session as Record<string, string>;
+                    yield convertSessionRecordToSession(sess);
+                }
             }
             sessionSearchCursor = newCursor;
         } while (sessionSearchCursor !== "0");

@@ -1,6 +1,7 @@
 import { getRandomFeedbackType, getRandomQuickFeedbackType, getRandomNumber, getUniqueId, getTime } from "./functions";
 import { RedisKeys } from "../../src/redisKeys";
 import Redis from "ioredis";
+import { Cluster } from "ioredis";
 
 export const attendanceMockData = (isTeacher: boolean = false, roomId: string=getUniqueId()) => {
   return {
@@ -34,14 +35,14 @@ export const feedbackMockData = {
   quickFeedback: { type: getRandomQuickFeedbackType(), stars: getRandomNumber(5)+1 }
 }
 
-export const addRoomContext = async (client: Redis.Redis | Redis.Cluster,roomId: string, context: any) => {
+export const addRoomContext = async (client: Redis | Cluster,roomId: string, context: any) => {
   const roomContextKey = RedisKeys.roomContext(roomId);
   await client.hset(roomContextKey, "classtype", context?.classtype || "");
   await client.hset(roomContextKey, "startat", context?.startat || "");
   await client.hset(roomContextKey, "endat", context?.endat || "");
 }
 
-export const addClassAttendees = async (client: Redis.Redis | Redis.Cluster,roomId: string, numOfStudents: number = 1) => {
+export const addClassAttendees = async (client: Redis | Cluster,roomId: string, numOfStudents: number = 1) => {
   const userIds = [];
   for (var i = 0; i< numOfStudents; i++){
     userIds.push(getUniqueId())
