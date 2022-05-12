@@ -1,4 +1,3 @@
-import { dbConnectionTest } from "./dbConnectionTest";
 import { attendanceServiceTest } from "./attendanceServiceTest";
 import { attendanceResolverTest } from "./attendanceResolverTest";
 import { Connection } from "typeorm";
@@ -17,7 +16,6 @@ afterAll(async () => {
 });
 
 describe("queries", () => {
-    dbConnectionTest();
     attendanceResolverTest();
     attendanceServiceTest();
 });
