@@ -5,6 +5,8 @@ What it mainly does is:
 
 1.  Write and Read student `attendance` to databse
 2.  Write and Read users `feedback` and `quick_feedback` to databse.
+3.  Read attendance information from `redis` and send it to CMS service
+4.  Schedule attendances.
 
 Accepts graphql _Queries_ and _Mutations_. This is the only service which has direct connection to `Attendance Databse`. Any service wants to **write&read** to any _attendance_, _feedback_ or _quick_feedback_ to **_Attendance Database_** has to make API call to _Attendance_ service.
 
@@ -53,9 +55,8 @@ docker run --rm -it \
 
 ## How to make PR
 
-Project has `master` and `alpha` (dev) branches. `master` branch contains production ready code  
-If there are any feature/bug*fixes need to be added. Start new branch onto `alpha`  
-When feature/bug_fixes are ready to merge, make \*\*\_PR*\*\* (Pull Request) targeting `alpha`
+Start new branch off `master`  
+When feature/bug_fixes are ready to merge, make \*\*\_PR*\*\* (Pull Request) targeting `master`
 
 ## How to make commit
 
