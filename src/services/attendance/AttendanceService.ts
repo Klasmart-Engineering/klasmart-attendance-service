@@ -90,6 +90,7 @@ export class AttendanceService {
                 return false;
             }
             const body: AttendanceRequestType = {
+                action: 'LeaveLiveRoom',
                 attendance_ids: [...attendanceIds],
                 class_end_time: roomContext.endAt,
                 class_length: roomContext.endAt-roomContext.startAt,
@@ -136,6 +137,7 @@ export class AttendanceService {
             console.log("classAttendees attendanceIds: ", attendanceIds);
             const roomContext = await this.getRoomContext(roomId);
             const requestBody: AttendanceRequestType = {
+                action: 'LeaveLiveRoom',
                 attendance_ids: [...attendanceIds],
                 class_end_time: roomContext.endAt,
                 class_length: roomContext.endAt-roomContext.startAt,
