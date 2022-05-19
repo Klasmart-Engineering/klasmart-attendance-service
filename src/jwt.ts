@@ -17,7 +17,7 @@ export async function generateToken(requestBody: AttendanceRequestType) {
             } else if (token) {
                 resolve(token);
             } else {
-                reject(new Error("Signing attendance token failed without explicit error"));
+                reject(new Error("Signing token failed without explicit error"));
             }
         });
     });
@@ -31,8 +31,8 @@ async function jwtConfig() {
     config = await jwtInit();
     return config;
 }
-const issuer = process.env.JWT_ISSUER;
 async function jwtInit(): Promise<{ options: SignOptions; secretOrPrivateKey: Secret; secretOrPublicKey: Secret }> {
+    const issuer = process.env.JWT_ISSUER;
     const awsSecretName = process.env.AWS_SECRET_NAME;
     if (awsSecretName) {
         if (process.env.JWT_SECRET) {
