@@ -39,32 +39,29 @@ export class AttendanceService {
             return false;
         }
         
-        const url = process.env.ATTENDANCE_SERVICE_ENDPOINT;
-        if (url) {
-            for await (const session of this.getSessions(roomId)) {
-                
-                const attendance = new Attendance();
-                try {
-                    attendance.sessionId = session.id;
-                    attendance.joinTimestamp = new Date(session.joinedAt);
-                    attendance.leaveTimestamp = new Date();
-                    attendance.roomId = roomId;
-                    attendance.userId = session.userId;
-                    attendance.isTeacher = session.isTeacher;
-                    await getConnection().createQueryBuilder()
-                        .insert()
-                        .into(Attendance)
-                        .values(attendance)
-                        .orIgnore()
-                        .execute();
-                } catch(e) {
-                    console.log(`Unable to save attendance: ${JSON.stringify({attendance, leaveTime: Date.now()})}`);
-                    console.log(e);
-                
-                }
+        for await (const session of this.getSessions(roomId)) {
+            
+            const attendance = new Attendance();
+            try {
+                attendance.sessionId = session.id;
+                attendance.joinTimestamp = new Date(session.joinedAt);
+                attendance.leaveTimestamp = new Date();
+                attendance.roomId = roomId;
+                attendance.userId = session.userId;
+                attendance.isTeacher = session.isTeacher;
+                await getConnection().createQueryBuilder()
+                    .insert()
+                    .into(Attendance)
+                    .values(attendance)
+                    .orIgnore()
+                    .execute();
+            } catch(e) {
+                console.log(`Unable to save attendance: ${JSON.stringify(attendance)}`);
+                console.log(e);
+            
             }
         }
-
+     
         try {
             const attendances = await getRepository(Attendance).find({ roomId });
             const attendanceIds = new Set([...attendances.map((a) => a.userId)]);
