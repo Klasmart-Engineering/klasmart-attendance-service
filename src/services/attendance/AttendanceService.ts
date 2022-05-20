@@ -100,7 +100,7 @@ export class AttendanceService {
             console.log("Attendance sent: ", roomId);
         } catch (e) {
             console.log("Unable to post attendance: ", roomId);
-            // console.error(e);
+            console.error(e);
         }
         return true;
     }
