@@ -57,6 +57,7 @@
     "@newrelic/apollo-server-plugin": "^1.0.2",
     "@types/express": "^4.17.13",
     "@types/graphql": "^14.5.0",
+    "@types/ioredis": "^4.28.10",
     "@types/jest": "^27.0.2",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/newrelic": "^7.0.2",
