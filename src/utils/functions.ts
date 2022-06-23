@@ -1,5 +1,4 @@
 import Redis from "ioredis";
-import { Cluster }  from "ioredis";
 import { Session } from "../types";
 
 export function convertSessionRecordToSession(session: Record<string, string>): Session {
@@ -22,9 +21,9 @@ export  async function createRedisClient() {
     const password = process.env.REDIS_PASS;
     const lazyConnect = true;
 
-    let redis: Redis | Cluster;
+    let redis: Redis.Redis | Redis.Cluster;
     if (redisMode === "CLUSTER") {
-        redis = new Cluster([
+        redis = new Redis.Cluster([
             {
                 port,
                 host,

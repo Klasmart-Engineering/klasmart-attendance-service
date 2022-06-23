@@ -1,5 +1,4 @@
 import Redis from "ioredis";
-import { Cluster } from "ioredis";
 import { getRepository, getConnection } from "typeorm";
 import axios from "axios";
 import {generateToken} from "../../jwt";
@@ -14,9 +13,9 @@ import {RedisKeys} from "../../redisKeys";
 import { convertSessionRecordToSession } from "../../utils/functions";
 
 export class AttendanceService {
-    private client: Redis | Cluster;
+    private client: Redis.Redis | Redis.Cluster;
 
-    constructor(redis: Redis | Cluster) {
+    constructor(redis: Redis.Redis | Redis.Cluster) {
         this.client = redis;
         setInterval(() => {
             this.checkSchedules();
@@ -87,7 +86,7 @@ export class AttendanceService {
                 return false;
             }
             const body: AttendanceRequestType = {
-                action: 'LeaveLiveRoom',
+                action: "LeaveLiveRoom",
                 attendance_ids: [...attendanceIds],
                 class_end_time: roomContext.endAt,
                 class_length: roomContext.endAt-roomContext.startAt,
@@ -134,7 +133,7 @@ export class AttendanceService {
             console.log("classAttendees attendanceIds: ", attendanceIds);
             const roomContext = await this.getRoomContext(roomId);
             const requestBody: AttendanceRequestType = {
-                action: 'LeaveLiveRoom',
+                action: "LeaveLiveRoom",
                 attendance_ids: [...attendanceIds],
                 class_end_time: roomContext.endAt,
                 class_length: roomContext.endAt-roomContext.startAt,
