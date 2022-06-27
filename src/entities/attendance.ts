@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, PrimaryColumn, Index } from "typeorm";
 
-@ObjectType()
 @Entity()
+@ObjectType()
 export class Attendance extends BaseEntity {
   @Field()
   @PrimaryColumn({ name: "session_id" })

@@ -31,7 +31,7 @@ export const feedbackMockData = {
     stars: getRandomNumber(5)+1,
     comment: "was awesome",
     feedbackType: getRandomFeedbackType(),
-    quickFeedback: { type: getRandomQuickFeedbackType(), stars: getRandomNumber(5)+1 }
+    quickFeedback: [{ type: getRandomQuickFeedbackType(), stars: getRandomNumber(5)+1 }]
 };
 
 export const addRoomContext = async (client: Redis.Redis | Redis.Cluster,roomId: string, context: any) => {

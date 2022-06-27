@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { getRepository, getConnection } from "typeorm";
+import { connection } from "../../index";
 import axios from "axios";
 import {generateToken} from "../../jwt";
 import {
@@ -15,13 +15,13 @@ import { convertSessionRecordToSession } from "../../utils/functions";
 export class AttendanceService {
     private client: Redis.Redis | Redis.Cluster;
 
-    constructor(redis: Redis.Redis | Redis.Cluster) {
+
+    public async startScheduler(redis: Redis.Redis | Redis.Cluster){
         this.client = redis;
         setInterval(() => {
             this.checkSchedules();
         }, 60*1000);
     }
-
     public async send(roomId: string): Promise<boolean> {
         const roomContext = await this.getRoomContext(roomId);
         
@@ -48,7 +48,7 @@ export class AttendanceService {
                 attendance.roomId = roomId;
                 attendance.userId = session.userId;
                 attendance.isTeacher = session.isTeacher;
-                await getConnection().createQueryBuilder()
+                await connection.createQueryBuilder()
                     .insert()
                     .into(Attendance)
                     .values(attendance)
@@ -62,7 +62,7 @@ export class AttendanceService {
         }
      
         try {
-            const attendances = await getRepository(Attendance).find({ roomId });
+            const attendances = await connection.getRepository(Attendance).find({where: { roomId }});
             const attendanceIds = new Set([...attendances.map((a) => a.userId)]);
 
             let numberOfTeachers = 0;
