@@ -1,6 +1,6 @@
 {
   "name": "kidsloop-attendance-service",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "",
   "scripts": {
     "test": "npm run test:unit && npm run test:integration",

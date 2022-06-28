@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.4](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.6.3...v1.6.4) (2022-06-28)
+
 ### [1.6.3](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.6.2...v1.6.3) (2022-06-23)
 
 ### [1.6.2](https://bitbucket.org/calmisland/kidsloop-attendance-service/compare/v1.6.1...v1.6.2) (2022-05-20)
