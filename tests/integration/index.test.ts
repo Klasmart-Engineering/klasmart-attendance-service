@@ -1,21 +1,23 @@
-import { Connection } from "typeorm";
-import { connectPostgres } from "../utils/postgresDB";
+import request from "supertest";
+import dotenv from "dotenv";
 import { attendance } from "./attendance";
 import { feedback } from "./feedback";
-import dotenv from "dotenv";
-dotenv.config();
+import { globalSetup, globalTeardown} from "../config";
 
-let connection: Connection;
-// jest.useFakeTimers();
+dotenv.config();
+jest.setTimeout(40*1000);
+
+const agent = request.agent(`http://localhost:${process.env.PORT}`);
 beforeAll(async () => {
-    connection = await connectPostgres(true);
+    await globalSetup();
 });
 
 afterAll(async () => {
-    await connection.close();
+    await globalTeardown();
 });
 
+
 describe("queries", () => {
-    attendance();
-    feedback();
+    attendance(agent);
+    feedback(agent);
 });

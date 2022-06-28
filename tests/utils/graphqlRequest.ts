@@ -13,12 +13,12 @@ interface Options {
 let schema: GraphQLSchema;
 
 export const graphqlRequest = async ({ source, variableValues }: Options) => {
-  if (!schema) {
-    schema = await createSchema();
-  }
-  return graphql({
-    schema,
-    source,
-    variableValues
-  });
+    if (!schema) {
+        schema = await createSchema();
+    }
+    return graphql({
+        schema,
+        source,
+        variableValues
+    });
 };

@@ -1,6 +1,7 @@
 
 import { buildSchema } from "type-graphql";
-import { AttendancesResolver, FeedbackResolver } from "../modules/index";
+import { AttendancesResolver } from "../modules/attendance";
+import { FeedbackResolver } from "../modules/feedback";
 
 export const createSchema = () => 
     buildSchema({

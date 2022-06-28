@@ -3,7 +3,7 @@ import { Feedback, QuickFeedback } from "../entities/feedback";
 import { UserInputError } from "apollo-server-express";
 import { QuickFeedbackType, FeedbackType } from "../types";
 import { SaveFeedbackArgs } from "../entities/argTypes";
-import { getConnection } from "typeorm";
+import { connection } from "../index";
 
 @Resolver(Feedback)
 export class FeedbackResolver{
@@ -15,8 +15,7 @@ export class FeedbackResolver{
         feedbackType, comment, quickFeedback 
     }: SaveFeedbackArgs
 
-    ): Promise<Feedback>{
-
+    ): Promise<Feedback|undefined>{
         const feedbackArray = [];
         for (const { type, stars } of quickFeedback) {
             const item = new QuickFeedback();
@@ -38,7 +37,7 @@ export class FeedbackResolver{
             feedback.stars = stars;
             feedback.comment = comment;
             feedback.quickFeedback = feedbackArray;
-            await getConnection().createQueryBuilder()
+            await connection.createQueryBuilder()
                 .insert()
                 .into(Feedback)
                 .values(feedback)
@@ -46,6 +45,7 @@ export class FeedbackResolver{
                 .execute();
         } catch(e) {
             console.log("Unable to save feedback: ", e);
+            return;
         }
         console.log("logFeedback", feedback);
         return feedback;

@@ -1,6 +1,6 @@
 import path from "path";
-import { ConnectionOptions } from "typeorm";
-export const connOptions: ConnectionOptions = {
+import { DataSourceOptions } from "typeorm";
+export const connOptions: DataSourceOptions = {
     name: "default",
     type: "postgres",
     url:
@@ -12,7 +12,4 @@ export const connOptions: ConnectionOptions = {
     migrations: [path.join(__dirname, "./migrations/*.{ts,js}")],
     migrationsTableName: "migrations",
     migrationsRun: true,
-    cli: {
-        migrationsDir: "src/migrations",
-    },
 };

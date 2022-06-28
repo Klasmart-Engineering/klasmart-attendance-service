@@ -13,11 +13,15 @@ Accepts graphql _Queries_ and _Mutations_. This is the only service which has di
 ## How to set up locally
 
 1. Clone repository, Recommended using **ssh+clone** to skip authentication every time
-2. `npm i` to install required packages
-3. `npm run test` to make sure all APIs work
-4. `npm run dev` usefull while in development
-5. `npm run build` builds the project
-6. `npm start` runs built project
+2. Install `postgress` and `redis`, installing them on docker recommended.  
+Create docker network `docker network create local-dev`.  
+To install postgres run `docker run --network local-dev -e POSTGRES_PASSWORD=kidsloop -e POSTGRES_USER=postgres -p 5432:5432 -d postgres`.  
+To install redis run `docker run --rm --name=redis --network local-dev -p 6379:6379 -d redis`
+3. `npm i` to install required packages
+4. `npm run test` to make sure all APIs work
+5. `npm run dev` usefull while in development
+6. `npm run build` builds the project
+7. `npm start` runs built project
 
 ## Run the service in a docker container
 

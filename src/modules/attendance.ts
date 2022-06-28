@@ -1,20 +1,19 @@
 import { Query, Mutation, Resolver,  Arg, Args } from "type-graphql";
 import { Attendance } from "../entities/attendance";
-import { getRepository, getConnection } from "typeorm";
 import { SaveAttendanceArgs } from "../entities/argTypes";
-import { attendanceService } from "../index";
+import { attendanceService, connection } from "../index";
 @Resolver(Attendance)
 export class AttendancesResolver {
 
   @Query(() => [Attendance])
     async getClassAttendance(@Arg("roomId") roomId: string):Promise<Attendance[]> {
-        const attendance = await getRepository(Attendance).find({ roomId });
+        const attendance = await connection.getRepository(Attendance).find({ where: {roomId} });
         return attendance;
     }
 
   @Query(() => [Attendance])
   async getUserAttendance(@Arg("userId") userId: string): Promise<Attendance[]> {
-      const attendance = await getRepository(Attendance).find({ userId });
+      const attendance = await connection.getRepository(Attendance).find({ where: {userId} });
       return attendance;
   }
 
@@ -22,7 +21,6 @@ export class AttendancesResolver {
   async saveAttendance(
     @Args() {roomId, userId, sessionId, isTeacher, joinTimestamp, leaveTimestamp }: SaveAttendanceArgs
   ): Promise<Attendance|undefined> {
-
       const attendance = new Attendance();
       try {
           attendance.sessionId = sessionId;
@@ -31,7 +29,7 @@ export class AttendancesResolver {
           attendance.roomId = roomId;
           attendance.userId = userId;
           attendance.isTeacher = isTeacher;
-          await getConnection().createQueryBuilder()
+          await connection.createQueryBuilder()
               .insert()
               .into(Attendance)
               .values(attendance)
@@ -52,7 +50,6 @@ export class AttendancesResolver {
     @Arg("roomId", {nullable: false})  roomId: string 
   ): Promise<boolean> {
       try{
-          console.log("sendAttendance: ", roomId);
           const res = await attendanceService.send(roomId);
           return res;
       }catch (e) {
